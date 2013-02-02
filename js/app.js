@@ -6,31 +6,66 @@ $(function() {
     // Collections
     var Tweets = Backbone.Collection.extend({
         model: Tweet,
-        url: 'http://search.twitter.com/search.json?q=Providence&rpp=5&callback=?',
+        url: function() {
+            return 'http://search.twitter.com/search.json?q=' + this.query + '&rpp=10&callback=?';
+        },
         parse: function(response) {
             console.log('parsing...');
-            return response.results
-        }
+            return response.results;
+        },
+        query: 'downcityjs'
     });
 
     // Views
     var TestView = Backbone.View.extend({
-        el: '.page',
+        el: '.test',
         render: function() {
             this.$el.html('Foo bar');
+        }
+    });
+
+    var SearchView = Backbone.View.extend({
+        el: '#search',
+        initialize: function() {
+            this.render();
         },
+        render: function() {
+            var template = _.template( $("#search_template").html(), {} );
+            this.$el.html( template );
+        },
+        events: {
+            "click #getResults": "doSearch",
+            "click #resetResults": "doReset"
+        },
+        doSearch: function( event ){
+            tweetView.loadResults($("#appendedInputButton").val());
+        },
+        doReset: function( event ){
+            tweetView.clearCollection();
+        }
     });
 
     var TweetView = Backbone.View.extend({
-        el: 'tweets',
+        el: '#tweets',
         initialize: function() {
             this.tweets = new Tweets();
-            this.tweets.bind('reset', function(collection) {
-                collection.each(function(tweet) {
-                    console.log(tweet.get('text'));
-                });
+            this.loadResults('danriti');
+            this.render();
+        },
+        render: function() {
+            console.log('tweet render');
+        },
+        loadResults: function(query) {
+            var that = this;
+            this.tweets.query = query;
+            this.tweets.fetch({
+                success: function(tweets) {
+                    $(that.el).append(_.template( $('#tweet_template').html(), {tweets: tweets.models, _:_})); 
+                }
             });
-            this.tweets.fetch();
+        },
+        clearCollection: function() {
+            console.log('clear collection');
         }
     });
 
@@ -43,6 +78,7 @@ $(function() {
 
     // Instantiations.
     var testView = new TestView();
+    var searchView = new SearchView();
     var tweetView = new TweetView();
     var router = new Router();
 
