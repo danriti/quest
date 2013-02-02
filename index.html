@@ -11,9 +11,28 @@
     <div class="container">
         <h1>Hello World.</h1>
         <hr />
-        <div class="page"></div>
-        <div class="tweets"></div>
+        <div id="search"></div>
+        <div id="tweets"></div>
     </div>
+
+    <!-- Templates -->
+    <script type="text/template" id="search_template">
+        <div class="input-append">
+            <input class="span2" id="appendedInputButton" type="text">
+            <button class="btn" id="getResults" type="button">Go!</button>
+            <button class="btn" id="resetResults" type="button">Reset</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="tweet_template">
+        <ul class="tweets">
+        <% _.each(tweets, function (tweet) { %>
+
+          <li><%= tweet.get('text') %></li> 
+
+        <% }); %>
+        </ul>
+    </script>
 
     <!-- Javascripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
