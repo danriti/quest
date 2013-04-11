@@ -11,29 +11,16 @@
     <div class="container">
         <h1>Counter</h1>
         <hr />
-        <div class="test"></div>
     </div>
 
     <!-- Templates -->
-    <script type="text/template" id="search_template">
-    </script>
-
-    <script type="text/template" id="search_template">
-        <div class="input-append">
-            <input class="span2" id="appendedInputButton" type="text">
-            <button class="btn" id="getResults" type="button">Go!</button>
-            <button class="btn" id="resetResults" type="button">Reset</button>
-        </div>
-    </script>
-
-    <script type="text/template" id="tweet_template">
-        <ul class="tweets">
-        <% _.each(tweets, function (tweet) { %>
-
-          <li><%= tweet.get('text') %></li>
-
-        <% }); %>
-        </ul>
+    <script type="text/template" id="control_template">
+        <button class='btn' id='start'>Start</button>
+        <button class='btn' id='stop'>Stop</button>
+        <button class='btn' id='reset'>Reset</button>
+        <div id='counter'>Counter: </div>
+        <div id='timer'>Timer: </div>
+        <div id='doubler'>Doubler: </div>
     </script>
 
     <!-- Javascripts -->

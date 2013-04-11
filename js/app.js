@@ -35,9 +35,15 @@ $(function() {
         }
     });
 
+    var Doubler = Backbone.Model.extend({
+        defaults: {
+            'value': 0
+        }
+    });
+
     // Views
     var TestView = Backbone.View.extend({
-        el: '.test',
+        el: '.container',
         events: {
             'click button#start': 'start',
             'click button#stop': 'stop',
@@ -50,6 +56,7 @@ $(function() {
             // models
             this.counter = new Counter();
             this.timer = new Timer();
+            this.doubler = new Doubler();
 
             // dependency: counter <- timer
             this.counter.on('change:value', function(model, value) {
@@ -57,13 +64,16 @@ $(function() {
                 $('#counter', self.el).html('Counter: ' + self.counter.get('value'));
                 $('#timer', self.el).html('Timer: ' + self.timer.getTime());
             });
+
+            // dependency: timer <- doubler
+            this.timer.on('change:value', function(model, value) {
+                self.doubler.set('value', value * 2);
+                $('#doubler', self.el).html('Doubler: ' + self.doubler.get('value'));
+            });
         },
         render: function() {
-            $(this.el).append("<button id='start'>Start</button>");
-            $(this.el).append("<button id='stop'>Stop</button>");
-            $(this.el).append("<button id='reset'>Reset</button>");
-            $(this.el).append("<div id='counter'></div>");
-            $(this.el).append("<div id='timer'></div>");
+            var template = _.template( $("#control_template").html(), {} );
+            this.$el.append( template );
             return this;
         },
         start: function() {
@@ -79,51 +89,6 @@ $(function() {
             this.counter.increment();
         }
     });
-
-    //var SearchView = Backbone.View.extend({
-    //    el: '#search',
-    //    initialize: function() {
-    //        this.render();
-    //    },
-    //    render: function() {
-    //        var template = _.template( $("#search_template").html(), {} );
-    //        this.$el.html( template );
-    //    },
-    //    events: {
-    //        "click #getResults": "doSearch",
-    //        "click #resetResults": "doReset"
-    //    },
-    //    doSearch: function( event ){
-    //        tweetView.loadResults($("#appendedInputButton").val());
-    //    },
-    //    doReset: function( event ){
-    //        tweetView.clearCollection();
-    //    }
-    //});
-
-    //var TweetView = Backbone.View.extend({
-    //    el: '#tweets',
-    //    initialize: function() {
-    //        this.tweets = new Tweets();
-    //        this.loadResults('danriti');
-    //        this.render();
-    //    },
-    //    render: function() {
-    //        console.log('tweet render');
-    //    },
-    //    loadResults: function(query) {
-    //        var that = this;
-    //        this.tweets.query = query;
-    //        this.tweets.fetch({
-    //            success: function(tweets) {
-    //                $(that.el).append(_.template( $('#tweet_template').html(), {tweets: tweets.models, _:_}));
-    //            }
-    //        });
-    //    },
-    //    clearCollection: function() {
-    //        console.log('clear collection');
-    //    }
-    //});
 
     // Router
     var Router = Backbone.Router.extend({
