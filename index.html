@@ -9,13 +9,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>Hello World.</h1>
+        <h1>Counter</h1>
         <hr />
-        <div id="search"></div>
-        <div id="tweets"></div>
+        <div class="test"></div>
     </div>
 
     <!-- Templates -->
+    <script type="text/template" id="search_template">
+    </script>
+
     <script type="text/template" id="search_template">
         <div class="input-append">
             <input class="span2" id="appendedInputButton" type="text">
@@ -37,6 +39,7 @@
     <!-- Javascripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.string/2.3.0/underscore.string.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone.js"></script>
 	<script src="js/app.js"></script>
 </body>
